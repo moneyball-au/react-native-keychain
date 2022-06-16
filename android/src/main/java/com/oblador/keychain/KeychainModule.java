@@ -612,13 +612,13 @@ public class KeychainModule extends ReactContextBaseJavaModule {
       String promptInfoDescription = promptInfoOptionsMap.getString(AuthPromptOptions.DESCRIPTION);
       promptInfoBuilder.setDescription(promptInfoDescription);
     }
-    if (null != promptInfoOptionsMap && promptInfoOptionsMap.hasKey(AuthPromptOptions.CANCEL)) {
-      String promptInfoNegativeButton = promptInfoOptionsMap.getString(AuthPromptOptions.CANCEL);
-      promptInfoBuilder.setNegativeButtonText(promptInfoNegativeButton);
-    }
+    // if (null != promptInfoOptionsMap && promptInfoOptionsMap.hasKey(AuthPromptOptions.CANCEL)) {
+    //   String promptInfoNegativeButton = promptInfoOptionsMap.getString(AuthPromptOptions.CANCEL);
+    //   promptInfoBuilder.setNegativeButtonText(promptInfoNegativeButton);
+    // }
 
     /* PromptInfo is only used in Biometric-enabled RSA storage and can only be unlocked by a strong biometric */
-    promptInfoBuilder.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_STRONG);
+    promptInfoBuilder.setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL);
 
     /* Bypass confirmation to avoid KeyStore unlock timeout being exceeded when using passive biometrics */
     promptInfoBuilder.setConfirmationRequired(false);
