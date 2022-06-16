@@ -476,6 +476,9 @@ public class KeychainModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void getSecurityLevel(@Nullable final ReadableMap options,
                                @NonNull final Promise promise) {
+    if (!DeviceAvailability.isDeviceSecure(getReactApplicationContext())) {
+      promise.resolve(null);
+    }
     // DONE (olku): if forced biometry than we should return security level = HARDWARE if it supported
     final String accessControl = getAccessControlOrDefault(options);
     final boolean useBiometry = getUseBiometry(accessControl);

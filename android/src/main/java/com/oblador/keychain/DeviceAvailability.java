@@ -34,6 +34,25 @@ public class DeviceAvailability {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_IRIS);
     }
 
+  public static boolean isDeviceSecure(@NonNull final Context context) {
+    final KeyguardManager km =
+      (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      return km.isDeviceSecure();
+    } else {
+      // NOTE: `KeyguardManager#isKeyguardSecure()` considers SIM locked state,
+      // but it will be ignored on falling-back to device credential on biometric authentication.
+      // That means, setting level to `SECURITY_LEVEL_SECRET` might be misleading for some users.
+      // But there is no equivalent APIs prior to M.
+      // `andriodx.biometric.BiometricManager#canAuthenticate(int)` looks like an alternative,
+      // but specifying `BiometricManager.Authenticators.DEVICE_CREDENTIAL` alone is not
+      // supported prior to API 30.
+      // https://developer.android.com/reference/androidx/biometric/BiometricManager#canAuthenticate(int)
+      return km.isKeyguardSecure();
+    }
+  }
+
   /** Check is permissions granted for biometric things. */
   public static boolean isPermissionsGranted(@NonNull final Context context) {
     // before api23 no permissions for biometric, no hardware == no permissions
