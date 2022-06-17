@@ -172,19 +172,19 @@ SecAccessControlCreateFlags accessControlValue(NSDictionary *options)
       return kSecAccessControlUserPresence;
     }
     else if ([options[kAccessControlType] isEqualToString: kAccessControlBiometryAny]) {
-      return kSecAccessControlTouchIDAny;
+      return kSecAccessControlBiometryAny;
     }
     else if ([options[kAccessControlType] isEqualToString: kAccessControlBiometryCurrentSet]) {
-      return kSecAccessControlTouchIDCurrentSet;
+      return kSecAccessControlBiometryCurrentSet;
     }
     else if ([options[kAccessControlType] isEqualToString: kAccessControlDevicePasscode]) {
       return kSecAccessControlDevicePasscode;
     }
     else if ([options[kAccessControlType] isEqualToString: kAccessControlBiometryAnyOrDevicePasscode]) {
-      return kSecAccessControlTouchIDAny|kSecAccessControlOr|kSecAccessControlDevicePasscode;
+      return kSecAccessControlBiometryAny|kSecAccessControlOr|kSecAccessControlDevicePasscode;
     }
     else if ([options[kAccessControlType] isEqualToString: kAccessControlBiometryCurrentSetOrDevicePasscode]) {
-      return kSecAccessControlTouchIDCurrentSet|kSecAccessControlOr|kSecAccessControlDevicePasscode;
+      return kSecAccessControlBiometryCurrentSet|kSecAccessControlOr|kSecAccessControlDevicePasscode;
     }
     else if ([options[kAccessControlType] isEqualToString: kAccessControlApplicationPassword]) {
       return kSecAccessControlApplicationPassword;
@@ -201,6 +201,11 @@ SecAccessControlCreateFlags accessControlValue(NSDictionary *options)
   NSString *accessGroup = accessGroupValue(options);
   CFStringRef accessible = accessibleValue(options);
   SecAccessControlCreateFlags accessControl = accessControlValue(options);
+
+#if TARGET_OS_SIMULATOR
+    // https://developer.apple.com/forums/thread/685773
+    accessControl = 0;
+#endif
 
   NSMutableDictionary *mAttributes = attributes.mutableCopy;
 
