@@ -590,8 +590,8 @@ public class KeychainModule extends ReactContextBaseJavaModule {
     return AccessControl.BIOMETRY_ANY.equals(accessControl)
       || AccessControl.BIOMETRY_CURRENT_SET.equals(accessControl)
       || AccessControl.BIOMETRY_ANY_OR_DEVICE_PASSCODE.equals(accessControl)
-      || AccessControl.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE.equals(accessControl);
-      || AccessControl.USER_PRESENCE.equals(accessControl)
+      || AccessControl.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE.equals(accessControl)
+      || AccessControl.USER_PRESENCE.equals(accessControl);
   }
 
   private void addCipherStorageToMap(@NonNull final CipherStorage cipherStorage) {
